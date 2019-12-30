@@ -1,6 +1,8 @@
 package main
 
 import (
+    "code.qschou.com/go_micro/etcd"
+    "code.qschou.com/go_micro/lease"
     "context"
     "fmt"
     "github.com/coreos/etcd/clientv3"
@@ -15,6 +17,11 @@ func main() {
         kv      clientv3.KV
         getResp *clientv3.GetResponse
     )
+    //ctx,c := context.WithCancel(context.Background())
+    //go printf(ctx)
+
+    //time.Sleep(5*time.Second)
+    //c()
 
     config = clientv3.Config{
         Endpoints:   []string{"123.57.51.133:2379"},
@@ -26,6 +33,14 @@ func main() {
         fmt.Println(err)
         return
     }
+
+
+    for i:=0;i<100;i++ {
+        go etcd.NewLease(client,"zzz","uuu")
+        time.Sleep(11*time.Second)
+    }
+
+
 
     // 用于读写etcd的键值对
     kv = clientv3.NewKV(client)
@@ -48,4 +63,17 @@ func main() {
         fmt.Println(err)
         return
     }
+}
+
+func printf(ctx context.Context)  {
+    for {
+        fmt.Println("a\n")
+        time.Sleep(time.Second)
+    }
+
+    select {
+    case <-ctx.Done():
+        fmt.Println("bbbbbbbbbb")
+    }
+
 }

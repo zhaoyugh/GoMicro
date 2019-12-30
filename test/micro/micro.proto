@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package micro;
+
+service MutualTrade {
+
+// 0.检查服务可用性, 正常情况下会返回字符串 "pong", 不包括双引号
+rpc Ping (PingRequest) returns (PingReply) {
+}
+
+// Ping request
+message PingRequest {
+}
+
+// Ping reply
+message PingReply {
+    string reply = 1;
+}
